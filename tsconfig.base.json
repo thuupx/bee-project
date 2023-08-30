@@ -13,9 +13,12 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "strictNullChecks": false,
     "baseUrl": ".",
     "paths": {
-      "@bee-project/core": ["libs/core/src/index.ts"]
+      "@bee-project/common": ["libs/common/src/index.ts"],
+      "@bee-project/core": ["libs/core/src/index.ts"],
+      "@bee-project/prisma": ["libs/prisma/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -5,12 +5,12 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { TcpOptions, Transport } from '@nestjs/microservices';
 
 import { AppModule } from './app/app.module';
+import { TcpOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const port: number = parseInt(process.env.PORT) || 4001;
+  const port: number = parseInt(process.env.PORT) || 4002;
 
   const app = await NestFactory.createMicroservice<TcpOptions>(AppModule, {
     transport: Transport.TCP,
@@ -19,7 +19,9 @@ async function bootstrap() {
     },
   });
   await app.listen();
-  Logger.log(`🚀 Auth microservice is running on: http://localhost:${port}`);
+  Logger.log(
+    `🚀 User microservice is running on: http://localhost:${port}}`
+  );
 }
 
 bootstrap();
