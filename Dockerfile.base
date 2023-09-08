@@ -1,0 +1,51 @@
+###################
+# DEVELOPMENT
+###################
+
+FROM node:18-alpine As development
+
+WORKDIR /usr/src/app
+
+COPY --chown=node:node package*.json ./
+
+RUN npm ci
+
+COPY --chown=node:node . .
+
+USER node
+
+###################
+# PRODUCTION BUILDER
+###################
+
+FROM node:18-alpine As builder
+
+WORKDIR /usr/src/app
+
+COPY --chown=node:node package*.json ./
+
+COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
+
+COPY --chown=node:node . .
+
+RUN npm run build
+
+ENV NODE_ENV production
+
+RUN npm ci --omit=dev && npm cache clean --force
+
+USER node
+
+###################
+# PRODUCTION
+###################
+
+FROM node:18-alpine As production
+
+COPY --chown=node:node --from=builder /usr/src/app/node_modules /app/node_modules
+COPY --chown=node:node --from=builder /usr/src/app/package.json /usr/src/app/package-lock.json /app/
+COPY --chown=node:node --from=builder /usr/src/app/dist /app/
+
+WORKDIR /app
+
+CMD ["node", "src/main.js", "2>&1"]

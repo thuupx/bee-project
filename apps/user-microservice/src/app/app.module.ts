@@ -1,9 +1,9 @@
-import { ConfigModule } from '@bee-project/core';
+import { KafkaClientModule } from '@bee-project/common';
+import { ConfigModule, ConfigService } from '@bee-project/core';
 import { PrismaModule } from '@bee-project/prisma';
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-
 import { Prisma } from '@prisma/client';
+
 import { AppService } from './app.service';
 
 @Module({
@@ -19,6 +19,7 @@ import { AppService } from './app.service';
       },
       inject: [ConfigService],
     }),
+    KafkaClientModule,
   ],
   providers: [AppService],
 })

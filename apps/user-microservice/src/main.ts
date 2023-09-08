@@ -10,9 +10,11 @@ async function bootstrap() {
     options: {
       client: {
         brokers: ['localhost:9094'],
+        clientId: 'user-microservice',
       },
     },
   });
+
   await app.listen();
   Logger.log(`🚀 User microservice is running`, 'UserMicroservice');
 }

@@ -5,6 +5,5 @@ import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [LoggerModule, ConfigModule],
-  exports: [LoggerModule, ConfigModule],
 })
 export class CoreModule {}

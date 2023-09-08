@@ -1,25 +1,22 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { TcpOptions, Transport } from '@nestjs/microservices';
+import { KafkaOptions, Transport } from '@nestjs/microservices';
 
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
-  const port: number = parseInt(process.env.PORT) || 4001;
-
-  const app = await NestFactory.createMicroservice<TcpOptions>(AppModule, {
-    transport: Transport.TCP,
+  const app = await NestFactory.createMicroservice<KafkaOptions>(AppModule, {
+    transport: Transport.KAFKA,
     options: {
-      port,
+      client: {
+        brokers: ['localhost:9094'],
+        clientId: 'auth-microservice',
+      },
     },
   });
   await app.listen();
-  Logger.log(`🚀 Auth microservice is running on: http://localhost:${port}`);
+
+  Logger.log(`🚀 Auth microservice is running`);
 }
 
 bootstrap();

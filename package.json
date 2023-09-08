@@ -6,7 +6,9 @@
     "gen:app": "nx generate @nrwl/nest:app",
     "gen:lib": "nx generate @nrwl/nest:lib",
     "dev": "nx run-many --target=serve --maxParallel=100 --inspect=false",
-    "db:generate": "npx prisma generate --schema=./libs/prisma/prisma/schema.prisma"
+    "db:generate": "npx prisma generate --schema=./libs/prisma/prisma/schema.prisma",
+    "build": "nx run-many --target=build --maxParallel=100",
+    "start:prod": "nx run-many --target=serve --configuration=production --maxParallel=100 --inspect=false"
   },
   "private": true,
   "dependencies": {
