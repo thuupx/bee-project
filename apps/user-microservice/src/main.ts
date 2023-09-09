@@ -1,3 +1,4 @@
+import { getKafkaBrokers } from '@bee-project/common';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { KafkaOptions, Transport } from '@nestjs/microservices';
@@ -9,7 +10,7 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        brokers: ['localhost:9094'],
+        brokers: getKafkaBrokers(),
         clientId: 'user-microservice',
       },
     },
