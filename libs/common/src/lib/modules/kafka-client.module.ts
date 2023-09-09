@@ -1,11 +1,11 @@
-import { ConfigModule, ConfigService } from '@bee-project/core';
+import { ConfigService } from '@bee-project/core';
 import { DynamicModule, Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 import { ClientToken } from '../constants';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [],
   providers: [],
 })
 export class KafkaClientModule {

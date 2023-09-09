@@ -1,12 +1,13 @@
-import { ClientToken } from '@bee-project/common';
-import { Inject, Injectable } from '@nestjs/common';
+import { InjectAuthClient } from '@bee-project/common';
+import { Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class AppService {
   constructor(
-    @Inject(ClientToken.AuthMicroservice)
-    private readonly client: ClientKafka) {}
+    @InjectAuthClient()
+    private readonly client: ClientKafka
+  ) {}
   getData(): { message: string } {
     return { message: 'Hello API' };
   }

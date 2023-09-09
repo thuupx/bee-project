@@ -18,6 +18,7 @@ export class ConfigModule {
         NestConfigModule.forRoot({
           load: configFactories,
           envFilePath,
+          isGlobal: true,
         }),
       ],
       providers: [ConfigService],

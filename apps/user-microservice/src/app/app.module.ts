@@ -1,4 +1,4 @@
-import { KafkaClientModule } from '@bee-project/common';
+import { ClientToken, KafkaClientModule } from '@bee-project/common';
 import { ConfigModule, ConfigService } from '@bee-project/core';
 import { PrismaModule } from '@bee-project/prisma';
 import { Module } from '@nestjs/common';
@@ -19,7 +19,7 @@ import { AppService } from './app.service';
       },
       inject: [ConfigService],
     }),
-    KafkaClientModule,
+    KafkaClientModule.register(ClientToken.UserMicroservice),
   ],
   providers: [AppService],
 })

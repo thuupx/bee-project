@@ -4,6 +4,6 @@ import { ConfigModule } from './config/config.module';
 import { LoggerModule } from './logger/logger.module';
 
 @Module({
-  imports: [LoggerModule, ConfigModule],
+  imports: [LoggerModule, ConfigModule.load()],
 })
 export class CoreModule {}

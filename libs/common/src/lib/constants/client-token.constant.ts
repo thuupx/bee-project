@@ -1,5 +1,5 @@
 export enum ClientToken {
-  ApiGateway = 'ApiGateway',
-  AuthMicroservice = 'AuthMicroservice',
-  UserMicroservice = 'UserMicroservice',
+  ApiGateway = 'ApiGatewayClient',
+  AuthMicroservice = 'AuthMicroserviceClient',
+  UserMicroservice = 'UserMicroserviceClient',
 }
