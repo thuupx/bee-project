@@ -1,5 +1,10 @@
 import {LoggerService} from '@bee-project/core'
-import {ClientToken, KafkaLogger, getKafkaBrokers} from '@bee-project/shared'
+import {
+  ClientToken,
+  KafkaLogger,
+  getKafkaBrokers,
+  registerGlobalFilters,
+} from '@bee-project/shared'
 import {NestFactory} from '@nestjs/core'
 import {KafkaOptions, Transport} from '@nestjs/microservices'
 import {Partitioners} from 'kafkajs'
@@ -27,6 +32,9 @@ async function bootstrap() {
     },
     logger,
   })
+
+  registerGlobalFilters(app)
+
   await app.listen()
 
   logger.log(`🚀 Auth microservice is running`)

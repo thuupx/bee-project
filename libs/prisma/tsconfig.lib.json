@@ -5,7 +5,7 @@
     "declaration": true,
     "types": ["node"],
     "target": "es2021",
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,

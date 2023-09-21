@@ -17,5 +17,11 @@ export const KafkaLogger =
 
     const message = namespace + entry.log.message + '\n' + log
 
-    logger[KAFKA_LOG_LEVEL_MAP[logLevel]](message, context)
+    const logFn = KAFKA_LOG_LEVEL_MAP[logLevel]
+
+    if (logFn !== 'error') {
+      logger[logFn](message, context)
+    } else {
+      logger.error(message, entry.log?.stack, context)
+    }
   }
