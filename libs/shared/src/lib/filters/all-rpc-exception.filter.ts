@@ -8,7 +8,6 @@ import {Observable, of} from 'rxjs'
 
 import {ServiceException} from '../exceptions/service.exception'
 import {IErrorResponse} from '../interfaces'
-import {KafkaJSNumberOfRetriesExceeded} from 'kafkajs'
 
 @Catch()
 export class AllRpcExceptionsFilter extends BaseRpcExceptionFilter<
