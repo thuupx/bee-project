@@ -1,14 +1,14 @@
-import { LoggerService } from '@bee-project/core';
-import { ClientToken, KafkaLogger, getKafkaBrokers } from '@bee-project/shared';
-import { NestFactory } from '@nestjs/core';
-import { KafkaOptions, Transport } from '@nestjs/microservices';
-import { Partitioners } from 'kafkajs';
-import { kebabCase } from 'lodash';
+import {LoggerService} from '@bee-project/core'
+import {ClientToken, KafkaLogger, getKafkaBrokers} from '@bee-project/shared'
+import {NestFactory} from '@nestjs/core'
+import {KafkaOptions, Transport} from '@nestjs/microservices'
+import {Partitioners} from 'kafkajs'
+import {kebabCase} from 'lodash'
 
-import { AppModule } from './app/app.module';
+import {AppModule} from './app/app.module'
 
 async function bootstrap() {
-  const logger = new LoggerService(ClientToken.AuthMicroservice);
+  const logger = new LoggerService(ClientToken.AuthMicroservice)
 
   const app = await NestFactory.createMicroservice<KafkaOptions>(AppModule, {
     transport: Transport.KAFKA,
@@ -26,10 +26,10 @@ async function bootstrap() {
       },
     },
     logger,
-  });
-  await app.listen();
+  })
+  await app.listen()
 
-  logger.log(`🚀 Auth microservice is running`);
+  logger.log(`🚀 Auth microservice is running`)
 }
 
-bootstrap();
+bootstrap()

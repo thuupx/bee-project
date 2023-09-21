@@ -1,2 +1,2 @@
-export * from './kafka-client';
-export * from './config';
+export * from './kafka-client'
+export * from './config'

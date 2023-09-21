@@ -1,6 +1,6 @@
-import { LogLevel } from '@nestjs/common';
+import {LogLevel} from '@nestjs/common'
 
-import { KafkaLogLevel } from '../enums';
+import {KafkaLogLevel} from '../enums'
 
 export const KAFKA_LOG_LEVEL_MAP: Record<KafkaLogLevel, LogLevel> = {
   [KafkaLogLevel.NOTHING]: 'log',
@@ -8,4 +8,4 @@ export const KAFKA_LOG_LEVEL_MAP: Record<KafkaLogLevel, LogLevel> = {
   [KafkaLogLevel.WARN]: 'warn',
   [KafkaLogLevel.INFO]: 'log',
   [KafkaLogLevel.DEBUG]: 'debug',
-};
+}

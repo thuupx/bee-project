@@ -1,17 +1,12 @@
-import {
-  DynamicModule,
-  InjectionToken,
-  Module,
-  Provider,
-} from '@nestjs/common';
+import {DynamicModule, InjectionToken, Module, Provider} from '@nestjs/common'
 
 import {
   PrismaModuleAsyncOptions,
   PrismaModuleOptions,
   PrismaOptionsFactory,
-} from './interfaces';
-import { PRISMA_SERVICE_OPTIONS } from './prisma.constants';
-import { PrismaService } from './prisma.service';
+} from './interfaces'
+import {PRISMA_SERVICE_OPTIONS} from './prisma.constants'
+import {PrismaService} from './prisma.service'
 
 @Module({
   providers: [PrismaService],
@@ -28,7 +23,7 @@ export class PrismaModule {
           useValue: options.prismaServiceOptions,
         },
       ],
-    };
+    }
   }
 
   static forRootAsync(options: PrismaModuleAsyncOptions): DynamicModule {
@@ -37,26 +32,26 @@ export class PrismaModule {
       module: PrismaModule,
       imports: options.imports || [],
       providers: this.createAsyncProviders(options),
-    };
+    }
   }
 
   private static createAsyncProviders(
-    options: PrismaModuleAsyncOptions
+    options: PrismaModuleAsyncOptions,
   ): Provider[] {
     if (options.useExisting || options.useFactory) {
-      return this.createAsyncOptionsProvider(options);
+      return this.createAsyncOptionsProvider(options)
     }
 
     const classProvider = {
       provide: options.useClass,
       useClass: options.useClass,
-    } as Provider;
+    } as Provider
 
-    return [...this.createAsyncOptionsProvider(options), classProvider];
+    return [...this.createAsyncOptionsProvider(options), classProvider]
   }
 
   private static createAsyncOptionsProvider(
-    options: PrismaModuleAsyncOptions
+    options: PrismaModuleAsyncOptions,
   ): Provider[] {
     if (options.useFactory) {
       return [
@@ -65,12 +60,12 @@ export class PrismaModule {
           useFactory: options.useFactory,
           inject: options.inject || [],
         },
-      ];
+      ]
     }
 
     const inject = [options.useExisting ?? options.useClass].filter(
-      Boolean
-    ) as InjectionToken[];
+      Boolean,
+    ) as InjectionToken[]
 
     return [
       {
@@ -79,6 +74,6 @@ export class PrismaModule {
           await optionsFactory.createPrismaOptions(),
         inject,
       },
-    ];
+    ]
   }
 }

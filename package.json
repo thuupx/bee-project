@@ -8,7 +8,9 @@
     "dev": "nx run-many --target=serve --maxParallel=100 --inspect=false",
     "db:generate": "npx prisma generate --schema=./libs/prisma/prisma/schema.prisma",
     "build": "nx run-many --target=build --maxParallel=100",
-    "start:prod": "nx run-many --target=serve --configuration=production --maxParallel=100 --inspect=false"
+    "start:prod": "nx run-many --target=serve --configuration=production --maxParallel=100 --inspect=false",
+    "lint": "nx run-many --target=lint",
+    "format": "nx format --all"
   },
   "private": true,
   "dependencies": {

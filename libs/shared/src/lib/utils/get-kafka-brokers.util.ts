@@ -1,15 +1,15 @@
-import { config } from 'dotenv';
+import {config} from 'dotenv'
 
-config();
+config()
 
 export const getKafkaBrokers = () => {
-  const brokersString = process.env.KAFKA_BROKERS;
+  const brokersString = process.env.KAFKA_BROKERS
 
   if (!brokersString) {
-    console.warn(`Missing KAFKA_BROKERS env variable`);
+    console.warn(`Missing KAFKA_BROKERS env variable`)
   }
 
-  const brokers = brokersString?.split(',')?.filter(Boolean);
+  const brokers = brokersString?.split(',')?.filter(Boolean)
 
-  return brokers || ['localhost:9094'];
-};
+  return brokers || ['localhost:9094']
+}

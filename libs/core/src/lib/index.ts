@@ -1,2 +1,2 @@
-export * from './core.module';
-export * from './logger';
+export * from './core.module'
+export * from './logger'

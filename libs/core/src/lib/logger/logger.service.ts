@@ -3,11 +3,11 @@ import {
   ConsoleLoggerOptions,
   Injectable,
   Scope,
-} from '@nestjs/common';
+} from '@nestjs/common'
 
-@Injectable({ scope: Scope.TRANSIENT })
+@Injectable({scope: Scope.TRANSIENT})
 export class LoggerService extends ConsoleLogger {
   constructor(context: string, options: ConsoleLoggerOptions = {}) {
-    super(context, options);
+    super(context, options)
   }
 }

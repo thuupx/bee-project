@@ -1,6 +1,6 @@
-import { PrismaService } from '@bee-project/prisma';
-import { Injectable } from '@nestjs/common';
-import { EventPattern } from '@nestjs/microservices';
+import {PrismaService} from '@bee-project/prisma'
+import {Injectable} from '@nestjs/common'
+import {EventPattern} from '@nestjs/microservices'
 
 @Injectable()
 export class AppService {
@@ -8,6 +8,6 @@ export class AppService {
 
   @EventPattern('get-user-by-id')
   getUserById(id: number) {
-    return this.prisma.user.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({where: {id}})
   }
 }
