@@ -1,6 +1,6 @@
-import { ClientToken, KafkaClientModule } from '@bee-project/common';
-import { ConfigModule, ConfigService } from '@bee-project/core';
+import { CoreModule } from '@bee-project/core';
 import { PrismaModule } from '@bee-project/prisma';
+import { ConfigModule, ConfigService } from '@bee-project/shared';
 import { Module } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
@@ -8,7 +8,8 @@ import { AppService } from './app.service';
 
 @Module({
   imports: [
-    ConfigModule.load(),
+    CoreModule,
+    ConfigModule.register(),
     PrismaModule.forRootAsync({
       isGlobal: true,
       useFactory: (configService: ConfigService) => {
@@ -19,7 +20,6 @@ import { AppService } from './app.service';
       },
       inject: [ConfigService],
     }),
-    KafkaClientModule.register(ClientToken.UserMicroservice),
   ],
   providers: [AppService],
 })

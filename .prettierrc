@@ -1,5 +1,17 @@
 {
-  "singleQuote": true,
   "arrowParens": "always",
-  "endOfLine": "lf"
+  "bracketSpacing": false,
+  "semi": false,
+  "singleQuote": true,
+  "printWidth": 80,
+  "trailingComma": "all",
+  "endOfLine": "lf",
+  "overrides": [
+    {
+      "files": ["*.json", ".prettierrc", ".babelrc"],
+      "options": {
+        "parser": "json"
+      }
+    }
+  ]
 }

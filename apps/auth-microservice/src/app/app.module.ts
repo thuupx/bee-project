@@ -1,15 +1,13 @@
-import { ClientToken, KafkaClientModule } from '@bee-project/common';
-import { ConfigModule, CoreModule } from '@bee-project/core';
-import { Module } from '@nestjs/common';
+import {CoreModule} from '@bee-project/core'
+import {ConfigModule} from '@bee-project/shared'
+import {Module} from '@nestjs/common'
 
-import { AppService } from './app.service';
+import {AppController} from './app.controller'
+import {AppService} from './app.service'
 
 @Module({
-  imports: [
-    CoreModule,
-    ConfigModule.load(),
-    KafkaClientModule.register(ClientToken.AuthMicroservice),
-  ],
+  imports: [CoreModule, ConfigModule.register()],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

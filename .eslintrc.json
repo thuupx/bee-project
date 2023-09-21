@@ -27,7 +27,7 @@
         "padding-line-between-statements": "off",
         "@typescript-eslint/padding-line-between-statements": [
           "warn",
-          { "blankLine": "always", "prev": "*", "next": "return" }
+          {"blankLine": "always", "prev": "*", "next": "return"}
         ]
       }
     },
