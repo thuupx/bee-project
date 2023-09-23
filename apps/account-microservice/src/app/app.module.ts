@@ -1,8 +1,11 @@
 import {CoreModule} from '@bee-project/core'
-import {PrismaModule} from '@bee-project/prisma'
-import {ConfigModule, ConfigService} from '@bee-project/shared'
+import {
+  ConfigModule,
+  ConfigService,
+  Prisma,
+  PrismaModule,
+} from '@bee-project/infrastructure'
 import {Module} from '@nestjs/common'
-import {Prisma} from '@prisma/client'
 
 import {AppController} from './app.controller'
 import {AppService} from './app.service'

@@ -1,10 +1,10 @@
-import {LoggerService} from '@bee-project/core'
+import {registerGlobalFilters} from '@bee-project/application'
 import {
   ClientToken,
   KafkaLogger,
+  LoggerService,
   getKafkaBrokers,
-  registerGlobalFilters,
-} from '@bee-project/shared'
+} from '@bee-project/infrastructure'
 import {NestFactory} from '@nestjs/core'
 import {KafkaOptions, Transport} from '@nestjs/microservices'
 import {Partitioners} from 'kafkajs'

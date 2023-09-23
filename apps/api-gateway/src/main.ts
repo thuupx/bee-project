@@ -1,10 +1,9 @@
-import {LoggerService} from '@bee-project/core'
 import {
-  ClientToken,
   registerGlobalFilters,
   registerShutDownHook,
   registerSwagger,
-} from '@bee-project/shared'
+} from '@bee-project/application'
+import {ClientToken, LoggerService} from '@bee-project/infrastructure'
 import {NestFactory} from '@nestjs/core'
 
 import {AppModule} from './app.module'

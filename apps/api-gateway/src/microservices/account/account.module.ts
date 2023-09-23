@@ -1,4 +1,4 @@
-import {ClientToken, KafkaClientModule} from '@bee-project/shared'
+import {ClientToken, KafkaClientModule} from '@bee-project/infrastructure'
 import {Module} from '@nestjs/common'
 
 import {AccountController} from './account.controller'

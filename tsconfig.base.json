@@ -17,9 +17,11 @@
     "baseUrl": ".",
     "noPropertyAccessFromIndexSignature": false,
     "paths": {
+      "@bee-project/application": ["libs/application/src/index.ts"],
       "@bee-project/core": ["libs/core/src/index.ts"],
-      "@bee-project/prisma": ["libs/prisma/src/index.ts"],
-      "@bee-project/shared": ["libs/shared/src/index.ts"]
+      "@bee-project/domain": ["libs/domain/src/index.ts"],
+      "@bee-project/infrastructure": ["libs/infrastructure/src/index.ts"],
+      "@bee-project/presentation": ["libs/presentation/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,4 +1,4 @@
-import {InjectAccountClient} from '@bee-project/shared'
+import {InjectAccountClient} from '@bee-project/infrastructure'
 import {Injectable, OnModuleInit} from '@nestjs/common'
 import {ClientKafka} from '@nestjs/microservices'
 
