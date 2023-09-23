@@ -1,7 +1,7 @@
 {
-  "name": "user-microservice",
+  "name": "account-microservice",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/user-microservice/src",
+  "sourceRoot": "apps/account-microservice/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -11,11 +11,11 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/user-microservice",
-        "main": "apps/user-microservice/src/main.ts",
-        "tsConfig": "apps/user-microservice/tsconfig.app.json",
+        "outputPath": "dist/apps/account-microservice",
+        "main": "apps/account-microservice/src/main.ts",
+        "tsConfig": "apps/account-microservice/tsconfig.app.json",
         "isolatedConfig": true,
-        "webpackConfig": "apps/user-microservice/webpack.config.js"
+        "webpackConfig": "apps/account-microservice/webpack.config.js"
       },
       "configurations": {
         "development": {},
@@ -26,14 +26,14 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "user-microservice:build"
+        "buildTarget": "account-microservice:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "user-microservice:build:development"
+          "buildTarget": "account-microservice:build:development"
         },
         "production": {
-          "buildTarget": "user-microservice:build:production"
+          "buildTarget": "account-microservice:build:production"
         }
       }
     },
@@ -41,14 +41,14 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/user-microservice/**/*.ts"]
+        "lintFilePatterns": ["apps/account-microservice/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/user-microservice/jest.config.ts",
+        "jestConfig": "apps/account-microservice/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

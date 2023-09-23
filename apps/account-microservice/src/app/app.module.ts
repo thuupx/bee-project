@@ -4,6 +4,7 @@ import {ConfigModule, ConfigService} from '@bee-project/shared'
 import {Module} from '@nestjs/common'
 import {Prisma} from '@prisma/client'
 
+import {AppController} from './app.controller'
 import {AppService} from './app.service'
 
 @Module({
@@ -21,6 +22,7 @@ import {AppService} from './app.service'
       inject: [ConfigService],
     }),
   ],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

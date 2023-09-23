@@ -2,10 +2,9 @@ import {CoreModule} from '@bee-project/core'
 import {ConfigModule} from '@bee-project/shared'
 import {Module} from '@nestjs/common'
 
-import {AuthModule} from './microservices/auth/auth.module'
-import {UserModule} from './microservices/user/user.module'
+import {AccountModule} from './microservices/account/account.module'
 
 @Module({
-  imports: [CoreModule, ConfigModule.register(), AuthModule, UserModule],
+  imports: [CoreModule, ConfigModule.register(), AccountModule],
 })
 export class AppModule {}
