@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  # Message Brokers
+  kafka:
+    container_name: kafka
+    image: docker.io/bitnami/kafka:3.5
+    ports:
+      - '9092:9092'
+      - '9094:9094'
+    volumes:
+      - 'kafka_data:/bitnami'
+    environment:
+      # # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      # # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    restart: on-failure
+
+
+# Authentication and Authorization services
+  keycloak:
+    container_name: keycloak
+    image: docker.io/bitnami/keycloak:latest
+    environment:
+      - KEYCLOAK_ADMIN_USER=admin
+      - KEYCLOAK_ADMIN_PASSWORD=Sup3rp@ssW0Rd
+    depends_on:
+      - postgresql
+    ports:
+      - "8080:8080"
+    restart: on-failure
+
+  postgresql:
+    container_name: postgresql
+    image: docker.io/bitnami/postgresql:latest
+    environment:
+        ALLOW_EMPTY_PASSWORD: yes
+        POSTGRESQL_USERNAME: bee_db_admin
+        POSTGRESQL_DATABASE: bee_db_dev
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "bee_db_admin"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    restart: on-failure
+    volumes:
+      - 'postgresql_data:/bitnami/postgresql'
+
+volumes:
+  kafka_data:
+    driver: local
+  postgresql_data:
+    driver: local
