@@ -30,7 +30,7 @@ services:
     depends_on:
       - database
     env_file:
-      - .env
+      - ../../.env
     environment:
       <<: *kong-env
     secrets:
@@ -45,7 +45,7 @@ services:
     user: '${KONG_USER:-kong}'
     profiles: ['kong']
     env_file:
-      - .env
+      - ../../.env
     environment:
       <<: *kong-env
       KONG_ADMIN_ACCESS_LOG: /dev/stdout
