@@ -18,11 +18,11 @@
     "noPropertyAccessFromIndexSignature": false,
     "paths": {
       "@bee-project/application": ["libs/application/src/index.ts"],
-      "@bee-project/core": ["libs/core/src/index.ts"],
       "@bee-project/domain": ["libs/domain/src/index.ts"],
       "@bee-project/infrastructure": ["libs/infrastructure/src/index.ts"],
       "@bee-project/presentation": ["libs/presentation/src/index.ts"]
     }
   },
+  "include": ["./__proto/*.proto"],
   "exclude": ["node_modules", "tmp"]
 }

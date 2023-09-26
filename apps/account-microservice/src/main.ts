@@ -1,34 +1,22 @@
 import {registerGlobalFilters} from '@bee-project/application'
-import {
-  ClientToken,
-  KafkaLogger,
-  LoggerService,
-  getKafkaBrokers,
-} from '@bee-project/infrastructure'
+import {ClientToken, LoggerService, initEnv} from '@bee-project/infrastructure'
 import {NestFactory} from '@nestjs/core'
-import {KafkaOptions, Transport} from '@nestjs/microservices'
-import {Partitioners} from 'kafkajs'
-import {kebabCase} from 'lodash'
+import {GrpcOptions, Transport} from '@nestjs/microservices'
+import {join} from 'path'
+
+initEnv()
 
 import {AppModule} from './app/app.module'
 
 async function bootstrap() {
   const logger = new LoggerService(ClientToken.AccountMicroservice)
 
-  const app = await NestFactory.createMicroservice<KafkaOptions>(AppModule, {
-    transport: Transport.KAFKA,
+  const app = await NestFactory.createMicroservice<GrpcOptions>(AppModule, {
+    transport: Transport.GRPC,
     options: {
-      client: {
-        brokers: getKafkaBrokers(),
-        clientId: kebabCase(ClientToken.AccountMicroservice),
-        logCreator: KafkaLogger(ClientToken.AccountMicroservice, logger),
-      },
-      producer: {
-        createPartitioner: Partitioners.DefaultPartitioner,
-      },
-      consumer: {
-        groupId: kebabCase(ClientToken.AccountMicroservice),
-      },
+      url: process.env.GRPC_ACCOUNT_URL,
+      package: ClientToken.AccountMicroservice,
+      protoPath: join('libs/infrastructure/src/lib/proto/account.proto'),
     },
     logger,
   })
@@ -37,7 +25,7 @@ async function bootstrap() {
 
   await app.listen()
 
-  logger.log(`🚀 Auth microservice is running`)
+  logger.log(`🚀 Account microservice is running`)
 }
 
 bootstrap()

@@ -1,4 +1,3 @@
-import {CoreModule} from '@bee-project/core'
 import {
   ConfigModule,
   ConfigService,
@@ -12,7 +11,6 @@ import {AppService} from './app.service'
 
 @Module({
   imports: [
-    CoreModule,
     ConfigModule.register(),
     PrismaModule.forRootAsync({
       isGlobal: true,

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package ProductMicroservice;
+
+service ProductService {
+  rpc GetProduct (GetProductQuery) returns (Product);
+}
+
+message GetProductQuery {
+  int32 id = 1;
+  string slug = 2;
+}
+
+message Product {
+  int32 id = 3;
+  string name = 4;
+  string slug = 5;
+  string description = 6;
+}

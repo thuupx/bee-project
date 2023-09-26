@@ -22,12 +22,8 @@ export class AllRpcExceptionsFilter extends BaseRpcExceptionFilter<
     this.loggerService = new LoggerService(AllRpcExceptionsFilter.name)
 
     process.on('unhandledRejection', (error: unknown) => {
-      const stack = error instanceof Error ? error.stack : error as string
-      this.loggerService.error(
-        error,
-        stack,
-        'UNHANDLED_REJECTION',
-      )
+      const stack = error instanceof Error ? error.stack : (error as string)
+      this.loggerService.error(error, stack, 'UNHANDLED_REJECTION')
     })
   }
 

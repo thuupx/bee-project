@@ -2,7 +2,11 @@
   "name": "@bee-project/presentation",
   "version": "0.0.1",
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "@nestjs/microservices": "^10.2.5",
+    "@bee-project/infrastructure": "*",
+    "@nestjs/common": "^10.2.5",
+    "rxjs": "^7.8.1"
   },
   "type": "commonjs",
   "main": "./src/index.js",

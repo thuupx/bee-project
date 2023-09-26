@@ -12,7 +12,7 @@
         "tsConfig": "libs/infrastructure/tsconfig.lib.json",
         "packageJson": "libs/infrastructure/package.json",
         "main": "libs/infrastructure/src/index.ts",
-        "assets": ["libs/infrastructure/*.md"]
+        "assets": ["libs/infrastructure/*.md", "libs/infrastructure/**/*.proto"]
       }
     },
     "publish": {

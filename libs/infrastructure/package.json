@@ -2,7 +2,16 @@
   "name": "@bee-project/infrastructure",
   "version": "0.0.1",
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "@prisma/client": "^5.3.1",
+    "@nestjs/common": "^10.2.5",
+    "@nestjs/config": "^3.1.1",
+    "@nestjs/microservices": "^10.2.5",
+    "kafkajs": "^2.2.4",
+    "lodash": "^4.17.21",
+    "rxjs": "^7.8.1",
+    "dotenv": "^16.3.1",
+    "@grpc/grpc-js": "^1.9.3"
   },
   "type": "commonjs",
   "main": "./src/index.js",
