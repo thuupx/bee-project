@@ -61,6 +61,7 @@ services:
       - postgres_password
     networks:
       - kong-net
+      - microservices-network
     ports:
       # The following two environment variables default to an insecure value (0.0.0.0)
       # according to the CIS Security test.
@@ -85,6 +86,7 @@ services:
       - kong_prefix_vol:${KONG_PREFIX:-/var/run/kong}
       - kong_tmp_vol:/tmp
       - ./config:/opt/kong
+      - ../../libs/infrastructure/src/lib/proto:/var/local/kong/proto
     security_opt:
       - no-new-privileges
 
@@ -128,3 +130,6 @@ volumes:
 networks:
   kong-net:
     external: false
+  microservices-network:
+    driver: bridge
+

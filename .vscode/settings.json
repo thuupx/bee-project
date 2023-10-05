@@ -1,3 +1,10 @@
 {
-  "cSpell.ignoreWords": ["Partitioner", "Partitioners", "Retriable", "proto"]
+  "cSpell.ignoreWords": ["Partitioner", "Partitioners", "Retriable", "proto"],
+  "protoc": {
+    "compile_on_save": false,
+    "options": [
+      "--proto_path=../libs/infrastructure/src/lib/proto",
+      "--java_out=gen/java"
+    ]
+  }
 }

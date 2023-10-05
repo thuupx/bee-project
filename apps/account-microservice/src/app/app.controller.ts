@@ -17,7 +17,11 @@ export class AppController implements AccountServiceController {
   login(
     request: LoginRequest,
   ): LoginResponse | Promise<LoginResponse> | Observable<LoginResponse> {
-    throw new Error('Method not implemented.')
+    console.log(request)
+
+    return {
+      token: request.email,
+    }
   }
 
   @Get()

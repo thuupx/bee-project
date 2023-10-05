@@ -1,0 +1,62 @@
+version: '3.9'
+
+name: bee-microservices
+
+services:
+  account:
+    container_name: account
+    build:
+      context: ../..
+      target: production
+      dockerfile: apps/account-microservice/Dockerfile
+    env_file:
+      - ../../.env
+    depends_on:
+      - pg_database
+    ports:
+      - 33001:33001
+    networks:
+      - microservices-network
+
+  product:
+    container_name: product
+    build:
+      context: ../..
+      target: production
+      dockerfile: apps/product-microservice/Dockerfile
+    env_file:
+      - ../../.env
+    depends_on:
+      - pg_database
+    ports:
+      - 33000:33000
+    networks:
+      - microservices-network
+
+  pg_database:
+    container_name: pg_database
+    image: docker.io/bitnami/postgresql:latest
+    env_file:
+      - ../../.env
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'bee_db_admin']
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    ports:
+      - 56432:5432
+    restart: on-failure
+    volumes:
+      - app_pg_data:/bitnami/postgresql
+
+volumes:
+  kafka_data:
+    driver: local
+  app_pg_data:
+    driver: local
+
+networks:
+  microservices-network:
+    driver: bridge

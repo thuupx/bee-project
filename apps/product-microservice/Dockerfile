@@ -52,4 +52,4 @@ RUN ls
 
 WORKDIR /app
 
-CMD ["node", "apps/{microservice}/main.js", "2>&1"]
+CMD ["node", "apps/product-microservice/main.js", "2>&1"]

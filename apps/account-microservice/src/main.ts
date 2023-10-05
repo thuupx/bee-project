@@ -16,7 +16,10 @@ async function bootstrap() {
     options: {
       url: process.env.GRPC_ACCOUNT_URL,
       package: ClientToken.AccountMicroservice,
-      protoPath: join('libs/infrastructure/src/lib/proto/account.proto'),
+      protoPath: join('account.proto'),
+      loader: {
+        includeDirs: [join('libs/infrastructure/src/lib/proto')],
+      },
     },
     logger,
   })

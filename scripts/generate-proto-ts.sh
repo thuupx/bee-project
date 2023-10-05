@@ -7,10 +7,11 @@ for PROTO_FILE in "$PROTO_DIR"/*.proto; do
   if [ -f "${PROTO_FILE}" ]; then
     echo "Generating $PROTO_FILE"
     (protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto \
+    --proto_path="$PROTO_DIR" \
     --ts_proto_opt=nestJs=true \
     --ts_proto_opt=addGrpcMetadata=true \
     --ts_proto_opt=exportCommonSymbols=false \
-    --ts_proto_out=. "$PROTO_FILE")
+    --ts_proto_out=$PROTO_DIR "$PROTO_FILE")
   fi
 done
 
