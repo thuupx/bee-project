@@ -1,13 +1,12 @@
 syntax = "proto3";
 
-import "api/annotations.proto";
+import "google/api/annotations.proto";
 
-package AccountMicroservice;
+package Account;
 
 service AccountService {
   rpc Login (LoginRequest) returns (LoginResponse) {
     option (google.api.http) = {
-      get: "/v1/messages/{name}"
       get: "/v1/ping"
     };
   };

@@ -1,14 +1,13 @@
 syntax = "proto3";
 
-package ProductMicroservice;
+package Product;
 
 service ProductService {
-  rpc GetProduct (GetProductQuery) returns (Product);
-}
-
-message GetProductQuery {
-  int32 id = 1;
-  string slug = 2;
+  rpc GetProduct (GetProductRequest) returns (Product);
+  rpc GetProducts (GetProductsRequest) returns (GetProductsResponse);
+  rpc CreateProduct (CreateProductRequest) returns (Product);
+  rpc UpdateProduct (UpdateProductRequest) returns (Product);
+  rpc ArchiveProduct (ArchiveProductRequest) returns (Product);
 }
 
 message Product {
@@ -16,4 +15,35 @@ message Product {
   string name = 4;
   string slug = 5;
   string description = 6;
+  bool is_public = 7;
+  bool is_archived = 8;
+}
+
+message GetProductRequest {
+  string slug = 2;
+}
+
+message GetProductsRequest {
+  int32 limit = 1;
+  string next_page_token = 2;
+  optional string query = 3;
+}
+
+message GetProductsResponse {
+  repeated Product products = 1;
+  int32 total = 2;
+  int32 limit = 3;
+  string next_page_token = 4;
+}
+
+message CreateProductRequest {
+  Product product = 1;
+}
+
+message UpdateProductRequest {
+  Product product = 1;
+}
+
+message ArchiveProductRequest {
+  int32 product_id = 1;
 }

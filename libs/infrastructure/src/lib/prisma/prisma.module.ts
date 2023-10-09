@@ -6,11 +6,12 @@ import {
   PrismaOptionsFactory,
 } from './interfaces'
 import {PRISMA_SERVICE_OPTIONS} from './prisma.constants'
-import {PrismaService} from './prisma.service'
+import {AccountPrismaService} from './services/account-prisma.service'
+import {ProductPrismaService} from './services/product-prisma.service'
 
 @Module({
-  providers: [PrismaService],
-  exports: [PrismaService],
+  providers: [AccountPrismaService, ProductPrismaService],
+  exports: [AccountPrismaService, ProductPrismaService],
 })
 export class PrismaModule {
   static forRoot(options: PrismaModuleOptions = {}): DynamicModule {

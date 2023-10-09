@@ -7,13 +7,13 @@ import {
 import {Partitioners} from 'kafkajs'
 import {kebabCase} from 'lodash'
 
-import {ClientToken} from '../enums'
+import {ServiceName} from '../enums'
 import {LoggerService} from '../logger'
 import {KafkaLogger, getKafkaBrokers} from '../utils'
 
 @Module({})
 export class KafkaClientModule {
-  static register(clientNames: ClientToken[]): DynamicModule {
+  static register(clientNames: ServiceName[]): DynamicModule {
     const clients: ClientProviderOptions[] = clientNames.map((name) => {
       const logger = new LoggerService(name)
 

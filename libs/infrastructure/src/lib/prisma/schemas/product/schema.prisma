@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../../../../node_modules/.prisma/product-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PRODUCT_DATABASE_URL")
+}
+
+model Product {
+  id             Int              @id @default(autoincrement())
+  slug           String           @unique
+  name           String
+  description    String?
+  isPublic       Boolean          @default(false) @map("is_public")
+  isArchived     Boolean          @default(false) @map("is_archived")
+  ProductVariant ProductVariant[]
+
+  @@map("products")
+}
+
+model ProductVariant {
+  id        Int     @id @default(autoincrement())
+  sku       String  @unique
+  price     Decimal
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int     @map("product_id")
+
+  @@map("product_variants")
+}

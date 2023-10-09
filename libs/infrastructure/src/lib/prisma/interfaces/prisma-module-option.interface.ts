@@ -1,5 +1,6 @@
 import {InjectionToken, ModuleMetadata} from '@nestjs/common'
-import {Prisma} from '@prisma/client'
+import {Prisma as PrismaProduct} from '.prisma/product-client'
+import {Prisma as PrismaAccount} from '.prisma/account-client'
 
 export interface PrismaModuleOptions {
   /**
@@ -16,7 +17,9 @@ export interface PrismaServiceOptions {
    * Pass options directly to the `PrismaClient`.
    * See: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference/#prismaclient
    */
-  prismaOptions?: Prisma.PrismaClientOptions
+  prismaOptions?:
+    | PrismaAccount.PrismaClientOptions
+    | PrismaProduct.PrismaClientOptions
 
   /**
    * If "true", `PrismaClient` explicitly creates a connection pool and your first query will respond instantly.

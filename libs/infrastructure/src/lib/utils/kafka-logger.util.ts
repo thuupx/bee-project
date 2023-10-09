@@ -2,11 +2,11 @@ import {LogEntry, logLevel} from 'kafkajs'
 import {omit} from 'lodash'
 
 import {KAFKA_LOG_LEVEL_MAP} from '../constants'
-import {ClientToken} from '../enums'
+import {ServiceName} from '../enums'
 import {LoggerService} from '../logger'
 
 export const KafkaLogger =
-  (clientToken: ClientToken, logger: LoggerService, postfix = 'ServerKafka') =>
+  (clientToken: ServiceName, logger: LoggerService, postfix = 'ServerKafka') =>
   (logLevel: logLevel) =>
   (entry: LogEntry) => {
     const namespace = entry.namespace ? `[${entry.namespace}] - ` : ''

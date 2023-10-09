@@ -35,26 +35,27 @@ services:
 
   pg_database:
     container_name: pg_database
-    image: docker.io/bitnami/postgresql:latest
+    image: postgres
     env_file:
       - ../../.env
     networks:
       - microservices-network
     healthcheck:
-      test: ['CMD', 'pg_isready', '-U', 'bee_db_admin']
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
       interval: 30s
       timeout: 30s
       retries: 3
     ports:
-      - 56432:5432
+      - 51432:5432
     restart: on-failure
     volumes:
-      - app_pg_data:/bitnami/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+      - ../../scripts/postgres:/docker-entrypoint-initdb.d
 
 volumes:
   kafka_data:
     driver: local
-  app_pg_data:
+  postgresql_data:
     driver: local
 
 networks:

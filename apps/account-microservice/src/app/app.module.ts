@@ -1,7 +1,6 @@
 import {
   ConfigModule,
   ConfigService,
-  Prisma,
   PrismaModule,
 } from '@bee-project/infrastructure'
 import {Module} from '@nestjs/common'
@@ -16,8 +15,9 @@ import {AppService} from './app.service'
       isGlobal: true,
       useFactory: (configService: ConfigService) => {
         return {
-          prismaOptions:
-            configService.get<Prisma.PrismaClientOptions>('prisma'),
+          prismaOptions: {
+            datasourceUrl: configService.get<string>('prisma.accountDbUrl'),
+          },
         }
       },
       inject: [ConfigService],

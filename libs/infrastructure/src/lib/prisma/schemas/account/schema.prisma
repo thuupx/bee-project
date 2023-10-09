@@ -3,15 +3,18 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../../../../../../node_modules/.prisma/account-client"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("ACCOUNT_DATABASE_URL")
 }
 
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
+
+  @@map("users")
 }

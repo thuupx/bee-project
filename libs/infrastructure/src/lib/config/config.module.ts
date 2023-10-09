@@ -3,6 +3,7 @@ import {ConfigFactory, ConfigModule as NestConfigModule} from '@nestjs/config'
 
 import {ConfigService} from './config.service'
 import grpc from './config-maps/grpc'
+import prisma from './config-maps/prisma'
 
 @Global()
 @Module({})
@@ -14,7 +15,7 @@ export class ConfigModule {
       module: ConfigModule,
       imports: [
         NestConfigModule.forRoot({
-          load: [...configFactories, grpc],
+          load: [...configFactories, grpc, prisma],
           envFilePath,
           isGlobal: true,
         }),

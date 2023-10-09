@@ -1,6 +1,6 @@
 import {Inject} from '@nestjs/common'
 
-import {ClientToken} from '../enums'
+import {ServiceName} from '../enums'
 
-export const InjectAccountClient = () => Inject(ClientToken.AccountMicroservice)
-export const InjectProductClient = () => Inject(ClientToken.ProductMicroservice)
+export const InjectAccountClient = () => Inject(ServiceName.Account)
+export const InjectProductClient = () => Inject(ServiceName.Product)
