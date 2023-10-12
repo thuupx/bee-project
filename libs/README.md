@@ -40,7 +40,7 @@
 # Dependency between layers
 
 ```
-Client -> Presentation Layer --> Application Layer --> Domain Layer
+Client -> Presentation Layer <-- Application Layer <-- Domain Layer
                  |                    ^
                  v                    |
                   Infrastructure Layer
