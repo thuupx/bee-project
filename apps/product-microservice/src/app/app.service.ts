@@ -1,10 +1,10 @@
+import {Product} from '@bee-project/domain'
 import {
   ArchiveProductRequest,
   CreateProductRequest,
   GetProductRequest,
   GetProductsRequest,
   GetProductsResponse,
-  Product,
   ProductPrismaService,
   UpdateProductRequest,
 } from '@bee-project/infrastructure'

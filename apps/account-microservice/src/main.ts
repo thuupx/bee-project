@@ -16,7 +16,7 @@ async function bootstrap() {
     options: {
       url: process.env.GRPC_ACCOUNT_URL,
       package: ServiceName.Account,
-      protoPath: join('account.proto'),
+      protoPath: 'account.proto',
       loader: {
         includeDirs: [join('libs/infrastructure/src/lib/proto')],
       },
@@ -28,7 +28,9 @@ async function bootstrap() {
 
   await app.listen()
 
-  logger.log(`🚀 Account microservice is running`)
+  logger.log(
+    `🚀 Account microservice is running at ${process.env.GRPC_ACCOUNT_URL}`,
+  )
 }
 
 bootstrap()

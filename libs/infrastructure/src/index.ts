@@ -1,4 +1,3 @@
-export * from '@prisma/client'
 export * from './lib/config'
 export * from './lib/constants'
 export * from './lib/decorators'

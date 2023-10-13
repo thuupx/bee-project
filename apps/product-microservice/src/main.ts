@@ -16,7 +16,10 @@ async function bootstrap() {
     options: {
       url: process.env.GRPC_PRODUCT_URL,
       package: ServiceName.Product,
-      protoPath: join('libs/infrastructure/src/lib/proto/product.proto'),
+      protoPath: 'product.proto',
+      loader: {
+        includeDirs: [join('libs/infrastructure/src/lib/proto')],
+      },
     },
     logger,
   })
@@ -25,7 +28,9 @@ async function bootstrap() {
 
   await app.listen()
 
-  logger.log(`🚀 Product microservice is running`)
+  logger.log(
+    `🚀 Product microservice is running at ${process.env.GRPC_PRODUCT_URL}`,
+  )
 }
 
 bootstrap()

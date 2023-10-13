@@ -14,7 +14,7 @@ services:
     depends_on:
       - pg_database
     ports:
-      - 33001:33001
+      - 33001:43001
     networks:
       - microservices-network
 
@@ -29,7 +29,7 @@ services:
     depends_on:
       - pg_database
     ports:
-      - 33000:33000
+      - 33000:43000
     networks:
       - microservices-network
 

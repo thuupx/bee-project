@@ -2,8 +2,14 @@ syntax = "proto3";
 
 package Product;
 
+import "google/api/annotations.proto";
+
 service ProductService {
-  rpc GetProduct (GetProductRequest) returns (Product);
+  rpc GetProduct (GetProductRequest) returns (Product) {
+    option (google.api.http) = {
+      get:"/v1/ping/{slug}"
+    };
+  };
   rpc GetProducts (GetProductsRequest) returns (GetProductsResponse);
   rpc CreateProduct (CreateProductRequest) returns (Product);
   rpc UpdateProduct (UpdateProductRequest) returns (Product);
@@ -11,16 +17,16 @@ service ProductService {
 }
 
 message Product {
-  int32 id = 3;
-  string name = 4;
-  string slug = 5;
-  string description = 6;
-  bool is_public = 7;
-  bool is_archived = 8;
+  int32 id = 1;
+  string name = 2;
+  string slug = 3;
+  string description = 4;
+  bool is_public = 5;
+  bool is_archived = 6;
 }
 
 message GetProductRequest {
-  string slug = 2;
+  string slug = 1;
 }
 
 message GetProductsRequest {

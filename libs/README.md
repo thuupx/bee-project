@@ -41,8 +41,8 @@
 
 ```
 Client -> Presentation Layer <-- Application Layer <-- Domain Layer
-                 |                    ^
-                 v                    |
+                 ^                    |
+                 |                    v
                   Infrastructure Layer
 ```
 

@@ -86,7 +86,7 @@ services:
       - kong_prefix_vol:${KONG_PREFIX:-/var/run/kong}
       - kong_tmp_vol:/tmp
       - ./config:/opt/kong
-      - ../../libs/infrastructure/src/lib/proto:/var/local/kong/proto
+      - ../../libs/infrastructure/src/lib/proto:/usr/local/kong/proto
     security_opt:
       - no-new-privileges
 
