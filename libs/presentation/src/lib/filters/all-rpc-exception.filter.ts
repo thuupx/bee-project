@@ -79,7 +79,11 @@ export class AllRpcExceptionsFilter extends BaseRpcExceptionFilter<
       data: payload,
     }
 
-    this.loggerService.error('UNKNOWN_EXCEPTION \n' + JSON.stringify(error))
+    this.loggerService.error(
+      exception,
+      (exception as any)?.stack || exception,
+      'UNKNOWN_EXCEPTION',
+    )
 
     return of({
       error: JSON.stringify(exception),
