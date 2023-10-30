@@ -6,5 +6,12 @@
       "--proto_path=../libs/infrastructure/src/lib/proto",
       "--java_out=gen/java"
     ]
-  }
+  },
+  "cSpell.words": [
+    "kafkajs",
+    "keycloak",
+    "nestjs",
+    "nrwl",
+    "protoc"
+  ]
 }
