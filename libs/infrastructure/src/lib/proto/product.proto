@@ -7,7 +7,7 @@ import "google/api/annotations.proto";
 service ProductService {
   rpc GetProduct (GetProductRequest) returns (Product) {
     option (google.api.http) = {
-      get:"/v1/ping/{slug}"
+      get:"/products/{slug}"
     };
   };
   rpc GetProducts (GetProductsRequest) returns (GetProductsResponse);
@@ -32,7 +32,7 @@ message GetProductRequest {
 message GetProductsRequest {
   int32 limit = 1;
   string next_page_token = 2;
-  optional string query = 3;
+  string query = 3;
 }
 
 message GetProductsResponse {

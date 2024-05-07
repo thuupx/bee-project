@@ -1,2 +1,19 @@
 _format_version: '2.1'
 _transform: true
+services:
+  - name: product-service
+    url: grpc://172.16.15.244:33000
+  - name: account-service
+    url: grpc://172.16.15.244:33001
+
+routes:
+  - name: product-route
+    paths:
+      - /products
+    service:
+      id: product-service
+  - name: account-route
+    paths:
+      - /accounts
+    service:
+      id: account-service

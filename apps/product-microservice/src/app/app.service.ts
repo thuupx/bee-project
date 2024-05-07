@@ -19,6 +19,7 @@ export class AppService {
     request: GetProductRequest,
     _metadata?: Metadata,
   ): Promise<Product> {
+    console.log('🚀 ~ AppService ~ request:', request)
     return this.productPrismaService.product.findUnique({
       where: {
         slug: request.slug,

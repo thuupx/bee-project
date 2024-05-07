@@ -7,11 +7,5 @@
       "--java_out=gen/java"
     ]
   },
-  "cSpell.words": [
-    "kafkajs",
-    "keycloak",
-    "nestjs",
-    "nrwl",
-    "protoc"
-  ]
+  "cSpell.words": ["kafkajs", "keycloak", "nestjs", "nrwl", "protoc"]
 }
