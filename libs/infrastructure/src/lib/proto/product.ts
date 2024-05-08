@@ -19,7 +19,7 @@ export interface GetProductRequest {
 export interface GetProductsRequest {
   limit: number
   nextPageToken: string
-  query?: string | undefined
+  query: string
 }
 
 export interface GetProductsResponse {

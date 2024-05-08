@@ -9,14 +9,14 @@ import prisma from './config-maps/prisma'
 @Module({})
 export class ConfigModule {
   static register(configFactories: ConfigFactory[] = []): DynamicModule {
-    // const envFilePath = [`.env.${process.env.NODE_ENV}`, '.env']
+    const envFilePath = [`.env.${process.env.NODE_ENV}`, '.env']
 
     return {
       module: ConfigModule,
       imports: [
         NestConfigModule.forRoot({
           load: [...configFactories, grpc, prisma],
-          // envFilePath,
+          envFilePath,
           isGlobal: true,
         }),
       ],

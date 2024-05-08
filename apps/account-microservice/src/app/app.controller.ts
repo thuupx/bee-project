@@ -3,8 +3,11 @@ import {
   AccountServiceControllerMethods,
   LoginRequest,
   LoginResponse,
+  SignUpRequest,
+  SignUpResponse,
 } from '@bee-project/infrastructure'
-import {Controller, Get} from '@nestjs/common'
+import {Metadata} from '@grpc/grpc-js'
+import {Controller} from '@nestjs/common'
 import {Observable} from 'rxjs'
 
 import {AppService} from './app.service'
@@ -19,13 +22,13 @@ export class AppController implements AccountServiceController {
   ): LoginResponse | Promise<LoginResponse> | Observable<LoginResponse> {
     console.log(request)
 
-    return {
-      token: request.email,
-    }
+    return this.appService.login(request)
   }
 
-  @Get()
-  getData() {
-    return this.appService.getData()
+  signUp(
+    request: SignUpRequest,
+    metadata?: Metadata,
+  ): SignUpResponse | Promise<SignUpResponse> | Observable<SignUpResponse> {
+    return this.appService.signUp(request)
   }
 }

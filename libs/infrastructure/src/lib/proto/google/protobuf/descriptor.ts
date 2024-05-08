@@ -1,5 +1,42 @@
 /* eslint-disable */
 
+/** The full set of known editions. */
+export enum Edition {
+  /** EDITION_UNKNOWN - A placeholder for an unknown edition value. */
+  EDITION_UNKNOWN = 0,
+  /**
+   * EDITION_PROTO2 - Legacy syntax "editions".  These pre-date editions, but behave much like
+   * distinct editions.  These can't be used to specify the edition of proto
+   * files, but feature definitions must supply proto2/proto3 defaults for
+   * backwards compatibility.
+   */
+  EDITION_PROTO2 = 998,
+  EDITION_PROTO3 = 999,
+  /**
+   * EDITION_2023 - Editions that have been released.  The specific values are arbitrary and
+   * should not be depended on, but they will always be time-ordered for easy
+   * comparison.
+   */
+  EDITION_2023 = 1000,
+  EDITION_2024 = 1001,
+  /**
+   * EDITION_1_TEST_ONLY - Placeholder editions for testing feature resolution.  These should not be
+   * used or relyed on outside of tests.
+   */
+  EDITION_1_TEST_ONLY = 1,
+  EDITION_2_TEST_ONLY = 2,
+  EDITION_99997_TEST_ONLY = 99997,
+  EDITION_99998_TEST_ONLY = 99998,
+  EDITION_99999_TEST_ONLY = 99999,
+  /**
+   * EDITION_MAX - Placeholder for specifying unbounded edition support.  This should only
+   * ever be used by plugins that can expect to never require any changes to
+   * support a new edition.
+   */
+  EDITION_MAX = 2147483647,
+  UNRECOGNIZED = -1,
+}
+
 /**
  * The protocol compiler can output a FileDescriptorSet containing the .proto
  * files it parses.
@@ -43,8 +80,8 @@ export interface FileDescriptorProto {
    * If `edition` is present, this value must be "editions".
    */
   syntax: string
-  /** The edition of the proto file, which is an opaque string. */
-  edition: string
+  /** The edition of the proto file. */
+  edition: Edition
 }
 
 /** Describes a message type. */
@@ -89,15 +126,16 @@ export interface ExtensionRangeOptions {
   /** The parser stores options it doesn't recognize here. See above. */
   uninterpretedOption: UninterpretedOption[]
   /**
-   * go/protobuf-stripping-extension-declarations
-   * Like Metadata, but we use a repeated field to hold all extension
-   * declarations. This should avoid the size increases of transforming a large
-   * extension range into small ranges in generated binaries.
+   * For external users: DO NOT USE. We are in the process of open sourcing
+   * extension declaration and executing internal cleanups before it can be
+   * used externally.
    */
   declaration: ExtensionRangeOptions_Declaration[]
+  /** Any features defined in the specific edition. */
+  features: FeatureSet | undefined
   /**
    * The verification state of the range.
-   * TODO(b/278783756): flip the default to DECLARATION once all empty ranges
+   * TODO: flip the default to DECLARATION once all empty ranges
    * are marked as UNVERIFIED.
    */
   verification: ExtensionRangeOptions_VerificationState
@@ -125,12 +163,6 @@ export interface ExtensionRangeOptions_Declaration {
    * and enums.
    */
   type: string
-  /**
-   * Deprecated. Please use "repeated".
-   *
-   * @deprecated
-   */
-  isRepeated: boolean
   /**
    * If true, indicates that the number is reserved in the extension range,
    * and any extension field with the number will fail to compile. Set this
@@ -191,12 +223,12 @@ export interface FieldDescriptorProto {
    * If true, this is a proto3 "optional". When a proto3 field is optional, it
    * tracks presence regardless of field type.
    *
-   * When proto3_optional is true, this field must be belong to a oneof to
-   * signal to old proto3 clients that presence is tracked for this field. This
-   * oneof is known as a "synthetic" oneof, and this field must be its sole
-   * member (each proto3 optional field gets its own synthetic oneof). Synthetic
-   * oneofs exist in the descriptor only, and do not generate any API. Synthetic
-   * oneofs must be ordered after all "real" oneofs.
+   * When proto3_optional is true, this field must belong to a oneof to signal
+   * to old proto3 clients that presence is tracked for this field. This oneof
+   * is known as a "synthetic" oneof, and this field must be its sole member
+   * (each proto3 optional field gets its own synthetic oneof). Synthetic oneofs
+   * exist in the descriptor only, and do not generate any API. Synthetic oneofs
+   * must be ordered after all "real" oneofs.
    *
    * For message fields, proto3_optional doesn't create any semantic change,
    * since non-repeated message fields always track presence. However it still
@@ -237,9 +269,10 @@ export enum FieldDescriptorProto_Type {
   TYPE_STRING = 9,
   /**
    * TYPE_GROUP - Tag-delimited aggregate.
-   * Group type is deprecated and not supported in proto3. However, Proto3
+   * Group type is deprecated and not supported after google.protobuf. However, Proto3
    * implementations should still be able to parse the group wire format and
-   * treat group fields as unknown fields.
+   * treat group fields as unknown fields.  In Editions, the group wire format
+   * can be enabled via the `message_encoding` feature.
    */
   TYPE_GROUP = 10,
   /** TYPE_MESSAGE - Length-delimited aggregate. */
@@ -260,8 +293,13 @@ export enum FieldDescriptorProto_Type {
 export enum FieldDescriptorProto_Label {
   /** LABEL_OPTIONAL - 0 is reserved for errors */
   LABEL_OPTIONAL = 1,
-  LABEL_REQUIRED = 2,
   LABEL_REPEATED = 3,
+  /**
+   * LABEL_REQUIRED - The required label is only allowed in google.protobuf.  In proto3 and Editions
+   * it's explicitly prohibited.  In Editions, the `field_presence` feature
+   * can be used to get this behavior.
+   */
+  LABEL_REQUIRED = 2,
   UNRECOGNIZED = -1,
 }
 
@@ -398,7 +436,6 @@ export interface FileOptions {
   ccGenericServices: boolean
   javaGenericServices: boolean
   pyGenericServices: boolean
-  phpGenericServices: boolean
   /**
    * Is this file deprecated?
    * Depending on the target platform, this can emit Deprecated annotations
@@ -448,6 +485,8 @@ export interface FileOptions {
    * determining the ruby package.
    */
   rubyPackage: string
+  /** Any features defined in the specific edition. */
+  features: FeatureSet | undefined
   /**
    * The parser stores options it doesn't recognize here.
    * See the documentation for the "Options" section above.
@@ -502,10 +541,6 @@ export interface MessageOptions {
    */
   deprecated: boolean
   /**
-   * NOTE: Do not set the option in .proto files. Always use the maps syntax
-   * instead. The option should only be implicitly set by the proto compiler
-   * parser.
-   *
    * Whether the message is an automatically generated map entry type for the
    * maps field.
    *
@@ -523,6 +558,10 @@ export interface MessageOptions {
    * use a native map in the target language to hold the keys and values.
    * The reflection APIs in such implementations still need to work as
    * if the field is a repeated message field.
+   *
+   * NOTE: Do not set the option in .proto files. Always use the maps syntax
+   * instead. The option should only be implicitly set by the proto compiler
+   * parser.
    */
   mapEntry: boolean
   /**
@@ -534,12 +573,14 @@ export interface MessageOptions {
    * This should only be used as a temporary measure against broken builds due
    * to the change in behavior for JSON field name conflicts.
    *
-   * TODO(b/261750190) This is legacy behavior we plan to remove once downstream
+   * TODO This is legacy behavior we plan to remove once downstream
    * teams have had time to migrate.
    *
    * @deprecated
    */
   deprecatedLegacyJsonFieldConflicts: boolean
+  /** Any features defined in the specific edition. */
+  features: FeatureSet | undefined
   /** The parser stores options it doesn't recognize here. See above. */
   uninterpretedOption: UninterpretedOption[]
 }
@@ -559,7 +600,9 @@ export interface FieldOptions {
    * a more efficient representation on the wire. Rather than repeatedly
    * writing the tag and type for each element, the entire array is encoded as
    * a single length-delimited blob. In proto3, only explicit setting it to
-   * false will avoid using packed encoding.
+   * false will avoid using packed encoding.  This option is prohibited in
+   * Editions, but the `repeated_field_encoding` feature can be used to control
+   * the behavior.
    */
   packed: boolean
   /**
@@ -594,19 +637,11 @@ export interface FieldOptions {
    * call from multiple threads concurrently, while non-const methods continue
    * to require exclusive access.
    *
-   * Note that implementations may choose not to check required fields within
-   * a lazy sub-message.  That is, calling IsInitialized() on the outer message
-   * may return true even if the inner message has missing required fields.
-   * This is necessary because otherwise the inner message would have to be
-   * parsed in order to perform the check, defeating the purpose of lazy
-   * parsing.  An implementation which chooses not to check required fields
-   * must be consistent about it.  That is, for any particular sub-message, the
-   * implementation must either *always* check its required fields, or *never*
-   * check its required fields, regardless of whether or not the message has
-   * been parsed.
-   *
-   * As of May 2022, lazy verifies the contents of the byte stream during
-   * parsing.  An invalid byte stream will cause the overall parsing to fail.
+   * Note that lazy message fields are still eagerly verified to check
+   * ill-formed wireformat or missing required fields. Calling IsInitialized()
+   * on the outer message would fail if the inner message has missing required
+   * fields. Failed verification would result in parsing failure (except when
+   * uninitialized messages are acceptable).
    */
   lazy: boolean
   /**
@@ -630,9 +665,10 @@ export interface FieldOptions {
    */
   debugRedact: boolean
   retention: FieldOptions_OptionRetention
-  /** @deprecated */
-  target: FieldOptions_OptionTargetType
   targets: FieldOptions_OptionTargetType[]
+  editionDefaults: FieldOptions_EditionDefault[]
+  /** Any features defined in the specific edition. */
+  features: FeatureSet | undefined
   /** The parser stores options it doesn't recognize here. See above. */
   uninterpretedOption: UninterpretedOption[]
 }
@@ -695,7 +731,15 @@ export enum FieldOptions_OptionTargetType {
   UNRECOGNIZED = -1,
 }
 
+export interface FieldOptions_EditionDefault {
+  edition: Edition
+  /** Textproto value. */
+  value: string
+}
+
 export interface OneofOptions {
+  /** Any features defined in the specific edition. */
+  features: FeatureSet | undefined
   /** The parser stores options it doesn't recognize here. See above. */
   uninterpretedOption: UninterpretedOption[]
 }
@@ -718,12 +762,14 @@ export interface EnumOptions {
    * and strips underscored from the fields before comparison in proto3 only.
    * The new behavior takes `json_name` into account and applies to proto2 as
    * well.
-   * TODO(b/261750190) Remove this legacy behavior once downstream teams have
+   * TODO Remove this legacy behavior once downstream teams have
    * had time to migrate.
    *
    * @deprecated
    */
   deprecatedLegacyJsonFieldConflicts: boolean
+  /** Any features defined in the specific edition. */
+  features: FeatureSet | undefined
   /** The parser stores options it doesn't recognize here. See above. */
   uninterpretedOption: UninterpretedOption[]
 }
@@ -736,11 +782,21 @@ export interface EnumValueOptions {
    * this is a formalization for deprecating enum values.
    */
   deprecated: boolean
+  /** Any features defined in the specific edition. */
+  features: FeatureSet | undefined
+  /**
+   * Indicate that fields annotated with this enum value should not be printed
+   * out when using debug formats, e.g. when the field contains sensitive
+   * credentials.
+   */
+  debugRedact: boolean
   /** The parser stores options it doesn't recognize here. See above. */
   uninterpretedOption: UninterpretedOption[]
 }
 
 export interface ServiceOptions {
+  /** Any features defined in the specific edition. */
+  features: FeatureSet | undefined
   /**
    * Is this service deprecated?
    * Depending on the target platform, this can emit Deprecated annotations
@@ -761,6 +817,8 @@ export interface MethodOptions {
    */
   deprecated: boolean
   idempotencyLevel: MethodOptions_IdempotencyLevel
+  /** Any features defined in the specific edition. */
+  features: FeatureSet | undefined
   /** The parser stores options it doesn't recognize here. See above. */
   uninterpretedOption: UninterpretedOption[]
 }
@@ -811,6 +869,97 @@ export interface UninterpretedOption {
 export interface UninterpretedOption_NamePart {
   namePart: string
   isExtension: boolean
+}
+
+/**
+ * TODO Enums in C++ gencode (and potentially other languages) are
+ * not well scoped.  This means that each of the feature enums below can clash
+ * with each other.  The short names we've chosen maximize call-site
+ * readability, but leave us very open to this scenario.  A future feature will
+ * be designed and implemented to handle this, hopefully before we ever hit a
+ * conflict here.
+ */
+export interface FeatureSet {
+  fieldPresence: FeatureSet_FieldPresence
+  enumType: FeatureSet_EnumType
+  repeatedFieldEncoding: FeatureSet_RepeatedFieldEncoding
+  utf8Validation: FeatureSet_Utf8Validation
+  messageEncoding: FeatureSet_MessageEncoding
+  jsonFormat: FeatureSet_JsonFormat
+}
+
+export enum FeatureSet_FieldPresence {
+  FIELD_PRESENCE_UNKNOWN = 0,
+  EXPLICIT = 1,
+  IMPLICIT = 2,
+  LEGACY_REQUIRED = 3,
+  UNRECOGNIZED = -1,
+}
+
+export enum FeatureSet_EnumType {
+  ENUM_TYPE_UNKNOWN = 0,
+  OPEN = 1,
+  CLOSED = 2,
+  UNRECOGNIZED = -1,
+}
+
+export enum FeatureSet_RepeatedFieldEncoding {
+  REPEATED_FIELD_ENCODING_UNKNOWN = 0,
+  PACKED = 1,
+  EXPANDED = 2,
+  UNRECOGNIZED = -1,
+}
+
+export enum FeatureSet_Utf8Validation {
+  UTF8_VALIDATION_UNKNOWN = 0,
+  VERIFY = 2,
+  NONE = 3,
+  UNRECOGNIZED = -1,
+}
+
+export enum FeatureSet_MessageEncoding {
+  MESSAGE_ENCODING_UNKNOWN = 0,
+  LENGTH_PREFIXED = 1,
+  DELIMITED = 2,
+  UNRECOGNIZED = -1,
+}
+
+export enum FeatureSet_JsonFormat {
+  JSON_FORMAT_UNKNOWN = 0,
+  ALLOW = 1,
+  LEGACY_BEST_EFFORT = 2,
+  UNRECOGNIZED = -1,
+}
+
+/**
+ * A compiled specification for the defaults of a set of features.  These
+ * messages are generated from FeatureSet extensions and can be used to seed
+ * feature resolution. The resolution with this object becomes a simple search
+ * for the closest matching edition, followed by proto merges.
+ */
+export interface FeatureSetDefaults {
+  defaults: FeatureSetDefaults_FeatureSetEditionDefault[]
+  /**
+   * The minimum supported edition (inclusive) when this was constructed.
+   * Editions before this will not have defaults.
+   */
+  minimumEdition: Edition
+  /**
+   * The maximum known edition (inclusive) when this was constructed. Editions
+   * after this will not have reliable defaults.
+   */
+  maximumEdition: Edition
+}
+
+/**
+ * A map from every known edition with a unique set of defaults to its
+ * defaults. Not all editions may be contained here.  For a given edition,
+ * the defaults at the closest matching edition ordered at or before it should
+ * be used.  This field must be in strict ascending order by edition.
+ */
+export interface FeatureSetDefaults_FeatureSetEditionDefault {
+  edition: Edition
+  features: FeatureSet | undefined
 }
 
 /**
@@ -872,7 +1021,7 @@ export interface SourceCodeInfo_Location {
    * location.
    *
    * Each element is a field number or an index.  They form a path from
-   * the root FileDescriptorProto to the place where the definition occurs.
+   * the root FileDescriptorProto to the place where the definition appears.
    * For example, this path:
    *   [ 4, 3, 2, 7, 1 ]
    * refers to:

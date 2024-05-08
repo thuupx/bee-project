@@ -59,3 +59,51 @@ Nx comes with local caching already built-in (check your `nx.json`). On CI you m
 - [Join the community](https://nx.dev/community)
 - [Subscribe to the Nx Youtube Channel](https://www.youtube.com/@nxdevtools)
 - [Follow us on Twitter](https://twitter.com/nxdevtools)
+
+## Start development
+
+### Install dependencies
+
+```bash
+brew install protobuf
+```
+
+```bash
+pnpm install
+```
+
+Run microservices locally
+
+```bash
+pnpm dev
+```
+
+Start all docker compose
+
+```bash
+chmod +x ./scripts/*
+
+./scripts/compose-up.sh
+```
+
+Incase you have to change proto file for development, just run the following script
+
+```bash
+./scripts/generate-proto-ts.sh
+```
+
+Incase you have to change prisma schema, just run this script for dev's migration:
+
+```bash
+./scripts/prisma-migrate.sh {schema_name} {migration_name}
+```
+
+Then all services have been started up, you have to add gateway services and define routes for each service, let's flow these instructions (for now I don't have time to setup the declaration config in kong.conf)
+
+- Open Kong Manager at http://localhost:8002
+- Create new gateway service for all microservices (product and account services for example), the host name is local IP address of your machine
+- Create new routes for these services
+- Create new GRPC gateway plugin: the proto file path is `/usr/local/kong/proto/{file_name}.proto`, this file is symlink of `libs/infrastructure/src/lib/proto/{file_name}.proto`
+
+
+*This project is under development, so it will have many break changes in the future, I will update the document if I have time.*
