@@ -1,6 +1,6 @@
 {
   "name": "@bee-project/source",
-  "version": "0.0.0",
+  "version": "0.0.1-alpha",
   "license": "MIT",
   "scripts": {
     "gen:app": "nx generate @nrwl/nest:app",
