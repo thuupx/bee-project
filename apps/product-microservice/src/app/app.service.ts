@@ -1,25 +1,37 @@
 import {Product} from '@bee-project/domain'
 import {
+  ACCOUNT_SERVICE_NAME,
+  AccountServiceClient,
   ArchiveProductRequest,
   CreateProductRequest,
   GetProductRequest,
   GetProductsRequest,
   GetProductsResponse,
+  InjectAccountClient,
   ProductPrismaService,
   UpdateProductRequest,
 } from '@bee-project/infrastructure'
 import {Metadata} from '@grpc/grpc-js'
-import {Injectable} from '@nestjs/common'
+import {Injectable, OnModuleInit} from '@nestjs/common'
+import {ClientGrpc} from '@nestjs/microservices'
 
 @Injectable()
-export class AppService {
-  constructor(private readonly productPrismaService: ProductPrismaService) {}
+export class AppService implements OnModuleInit {
+  private accountService: AccountServiceClient
+  constructor(
+    private readonly productPrismaService: ProductPrismaService,
+    @InjectAccountClient() private readonly client: ClientGrpc,
+  ) {}
+
+  onModuleInit() {
+    this.accountService =
+      this.client.getService<AccountServiceClient>(ACCOUNT_SERVICE_NAME)
+  }
 
   getProduct(
     request: GetProductRequest,
     _metadata?: Metadata,
   ): Promise<Product> {
-    console.log('🚀 ~ AppService ~ request:', request)
     return this.productPrismaService.product.findUnique({
       where: {
         slug: request.slug,

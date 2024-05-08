@@ -1,7 +1,9 @@
 import {
   ConfigModule,
   ConfigService,
+  GrpcClientModule,
   PrismaModule,
+  ServiceName,
 } from '@bee-project/infrastructure'
 import {Module} from '@nestjs/common'
 
@@ -11,6 +13,7 @@ import {AppService} from './app.service'
 @Module({
   imports: [
     ConfigModule.register(),
+    GrpcClientModule.register([ServiceName.Account]),
     PrismaModule.forRootAsync({
       isGlobal: true,
       useFactory: (configService: ConfigService) => {
