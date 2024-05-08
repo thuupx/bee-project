@@ -7,9 +7,17 @@ package Account;
 service AccountService {
   rpc Login (LoginRequest) returns (LoginResponse) {
     option (google.api.http) = {
-      get: "/v1/ping"
+      post: "/accounts/login"
+      body: "*"
     };
   };
+
+  rpc SignUp(SignUpRequest) returns (SignUpResponse) {
+    option (google.api.http) = {
+      post: "/accounts/signup"
+      body: "*"
+    };
+  }
 }
 
 message LoginRequest {
@@ -18,5 +26,15 @@ message LoginRequest {
 }
 
 message LoginResponse {
+  string token = 1;
+}
+
+message SignUpRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+}
+
+message SignUpResponse {
   string token = 1;
 }

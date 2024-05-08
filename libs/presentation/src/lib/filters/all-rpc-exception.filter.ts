@@ -4,7 +4,7 @@ import {
   BaseRpcExceptionFilter,
   KafkaRetriableException,
 } from '@nestjs/microservices'
-import {Observable, of} from 'rxjs'
+import {Observable, throwError} from 'rxjs'
 
 import {ServiceException} from '../exceptions/service.exception'
 import {IErrorResponse} from '../interfaces'
@@ -48,11 +48,11 @@ export class AllRpcExceptionsFilter extends BaseRpcExceptionFilter<
 
     this.loggerService.error({error, errorCode})
 
-    return of({
+    return throwError(() => ({
       errorCode: 'SERVICE_ERROR',
       error: exception.getError().toString(),
       data: payload,
-    })
+    }))
   }
 
   catchKafkaRetriableException(
@@ -62,11 +62,11 @@ export class AllRpcExceptionsFilter extends BaseRpcExceptionFilter<
     this.loggerService.setContext('KafkaRetriableException')
     this.loggerService.error(exception.getError())
 
-    return of({
+    return throwError(() => ({
       errorCode: 'SERVICE_ERROR',
       error: exception.getError().toString(),
       data: payload,
-    })
+    }))
   }
 
   catchUnknownException(
@@ -85,10 +85,6 @@ export class AllRpcExceptionsFilter extends BaseRpcExceptionFilter<
       'UNKNOWN_EXCEPTION',
     )
 
-    return of({
-      error: JSON.stringify(exception),
-      errorCode: 'INTERNAL_SERVER_ERROR',
-      data: payload,
-    })
+    return throwError(() => error)
   }
 }
